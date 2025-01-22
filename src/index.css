@@ -1,0 +1,121 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 280 50% 3%;
+    --foreground: 210 40% 98%;
+
+    --card: 280 50% 5%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 280 50% 5%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 280 75% 60%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 280 50% 15%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 280 50% 15%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 280 50% 15%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 280 50% 15%;
+    --input: 280 50% 15%;
+    --ring: 280 75% 60%;
+
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    background: linear-gradient(to bottom right, 
+      hsl(280 50% 3%),
+      hsl(320 50% 3%)
+    );
+    min-height: 100vh;
+  }
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glass:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+@keyframes pulse-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-pulse {
+  animation: pulse-gradient 3s ease infinite;
+  background-size: 200% 200%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .glass {
+    padding: 1rem;
+  }
+}
+
+/* Enhanced scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
