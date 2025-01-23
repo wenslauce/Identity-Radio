@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { supabase } from '@/integrations/supabase/client';
 import { AdminControls } from '@/components/AdminControls';
 
+
 const Admin = () => {
   const navigate = useNavigate();
   const { isAdmin, isLoading } = useAuth();
@@ -29,6 +30,7 @@ const Admin = () => {
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-background to-purple-900/20 p-4 md:p-8">
       <div className="max-w-7xl mx-auto space-y-8">
+
         <div className="flex justify-between items-center">
           <h1 className="text-3xl font-bold">Admin Dashboard</h1>
           <Button onClick={handleLogout} variant="outline">

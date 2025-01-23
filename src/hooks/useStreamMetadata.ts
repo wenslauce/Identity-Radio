@@ -14,45 +14,49 @@ export const useStreamMetadata = (streamUrl: string) => {
   useEffect(() => {
     const fetchMetadata = async () => {
       try {
-        const { data, error } = await supabase.functions.invoke('get-metadata', {
-          method: 'GET'
-        });
-        
+        // Use Supabase function to fetch metadata
+        const { data, error } = await supabase.functions.invoke('get-metadata');
+
         if (error) {
-          console.error('Error fetching metadata:', error);
-          return;
+          throw error;
         }
 
-        if (data && (data.title || data.artist)) {
-          if (data.artist !== trackInfo.artist || data.title !== trackInfo.title) {
-            const newTrackInfo = { 
-              artist: data.artist || 'Unknown Artist', 
-              title: data.title || 'Unknown Track',
-              coverUrl: data.coverUrl
-            };
-            
-            setTrackInfo(newTrackInfo);
-            
-            if ('mediaSession' in navigator) {
-              navigator.mediaSession.metadata = new MediaMetadata({
-                title: newTrackInfo.title,
-                artist: newTrackInfo.artist,
-                artwork: [
-                  { 
-                    src: newTrackInfo.coverUrl || '/placeholder.svg',
-                    sizes: '512x512',
-                    type: 'image/png'
-                  }
-                ]
-              });
-            }
+        if (!data) {
+          throw new Error('No data received from metadata service');
+        }
 
-            toast({
-              title: "Now Playing",
-              description: `${newTrackInfo.artist} - ${newTrackInfo.title}`,
-              duration: 3000
+        const currentTrack = {
+          artist: data.artist || 'Unknown Artist',
+          title: data.title || 'Unknown Track',
+          coverUrl: data.coverUrl
+        };
+
+        // Only update and notify if the track has changed
+        if (currentTrack.artist !== trackInfo.artist || currentTrack.title !== trackInfo.title) {
+
+
+          setTrackInfo(currentTrack);
+
+          // Update media session
+          if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+              title: currentTrack.title,
+              artist: currentTrack.artist,
+              artwork: [
+                { 
+                  src: currentTrack.coverUrl || '/placeholder.svg',
+                  sizes: '512x512',
+                  type: 'image/png'
+                }
+              ]
             });
           }
+
+          toast({
+            title: "Now Playing",
+            description: `${currentTrack.artist} - ${currentTrack.title}`,
+            duration: 3000
+          });
         }
       } catch (error) {
         console.error('Error fetching metadata:', error);

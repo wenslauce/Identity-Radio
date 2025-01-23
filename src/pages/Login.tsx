@@ -1,3 +1,4 @@
+
 import { Auth } from '@supabase/auth-ui-react';
 import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from '@/integrations/supabase/client';
@@ -17,16 +18,10 @@ const Login = () => {
       
       if (sessionError) {
         console.error('Session error:', sessionError);
-        toast({
-          title: "Authentication Error",
-          description: "Please try logging in again",
-          variant: "destructive"
-        });
-        return;
+        return; // Don't show error to user, just fail silently
       }
       
       if (session) {
-        // First check if user exists in admin_users table
         const { data: adminData, error: adminError } = await supabase
           .from('admin_users')
           .select('*')
@@ -35,11 +30,6 @@ const Login = () => {
         
         if (adminError) {
           console.error('Error checking admin status:', adminError);
-          toast({
-            title: "Error",
-            description: "Failed to verify admin status",
-            variant: "destructive"
-          });
           await supabase.auth.signOut();
           return;
         }
@@ -57,13 +47,10 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Auth check error:', error);
-      toast({
-        title: "Error",
-        description: "An error occurred while checking authentication",
-        variant: "destructive"
-      });
+      // Don't show error toast, just log it
     }
   };
+
 
   useEffect(() => {
     if (!isLoading) {
