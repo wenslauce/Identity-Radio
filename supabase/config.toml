@@ -1,0 +1,4 @@
+project_id = "kckpdzaandfnaxjmsrje"
+
+[functions.get-metadata]
+verify_jwt = false
